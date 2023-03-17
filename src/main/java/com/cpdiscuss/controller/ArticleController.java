@@ -3,6 +3,7 @@ package com.cpdiscuss.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cpdiscuss.model.Article;
 import com.cpdiscuss.model.Comment;
+import com.cpdiscuss.model.Tag;
 import com.cpdiscuss.repository.ArticleRepository;
+import com.cpdiscuss.repository.TagRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.websocket.server.PathParam;
@@ -28,6 +31,8 @@ public class ArticleController {
 
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @GetMapping("/articles")
     public Map<String, Object> articles() {
@@ -45,6 +50,17 @@ public class ArticleController {
         Article existingArticle = getArticle(articleName);
 
         Map<String, Object> response = new HashMap<>();
+        Set<String> tags=article.getTags();
+        for(String tag:tags){
+            Tag existingTag=tagRepository.findByTagName(tag);
+            if(existingTag != null){
+                
+            }else{
+                Tag newTag=new Tag();
+                newTag.setTagName(tag);
+                tagRepository.save(newTag);
+            }
+        }
         if (existingArticle != null) {
             response.put("ok", (Object) false);
             response.put("error", "Article with given name" + articleName + " already exists");

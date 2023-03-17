@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "articles")
 @Entity(name = "Article")
 public class Article {
-
+    
     @Id
     private String articleId;
     private String name;
@@ -60,9 +60,13 @@ public class Article {
     public Article(){
         this.init();
     }
+    public String getArticleId(){
+        return this.articleId;
+    }
     public List<Comment> getComments(){
         return this.comments;
     }
+    
     public void addComment(Comment comment){
         this.comments.add(comment);
     }

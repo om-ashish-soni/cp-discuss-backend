@@ -23,6 +23,7 @@ public class CommentController {
     public CommentController(){
         
     }
+    
     @PostMapping("/comments/ofarticle/create/{articleName}")
     public Article commentOnArticle(@PathVariable String articleName,@RequestBody Comment comment) {
         commentRepository.save(comment);
